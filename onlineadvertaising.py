@@ -224,12 +224,6 @@ pd.DataFrame(click,
 T = 100
 n_experiments = 50
 
-rewards = [[] for j in range(N)]
-arms = [[] for j in range(N)]
-
-means = [[] for j in range(N)]
-sigmas = [[] for j in range(N)]
-
 M = np.zeros((n_experiments, T, N+1, len(budgets)), dtype=int)
 A = np.zeros((n_experiments, T, N+1, len(budgets)))
 V = np.zeros((n_experiments, T, N+1, len(budgets)))
@@ -253,11 +247,6 @@ for exp in range(n_experiments):
       arm_pulled = learners[j].pull_arm()
       reward = envs[j].round(arm_pulled)
       learners[j].update(arm_pulled, reward)
-            
-      arms[j].append(learners[j].arm_pulled)
-      rewards[j].append(learners[j].collected_rewards)
-      means[j].append(learners[j].means)
-      sigmas[j].append(learners[j].sigmas)
       
       reg_error[exp][j][t] = np.max(np.absolute((learners[j].means - envs[j].means)))
       vals[j] = (learners[j].means.tolist())
